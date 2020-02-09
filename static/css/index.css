@@ -1,12 +1,108 @@
-html,body,ul,li,ol,dl,dd,dt,p,h1,h2,h3,h4,h5,h6,form,fieldset,legend,img{margin:0;padding:0}
-fieldset,img{border:0}
-img{display:block}
-address,caption,cite,code,dfn,th,var{font-style:normal;font-weight:normal}
-ul,ol{list-style:none}input{padding-top:0;padding-bottom:0;font-family:"SimSun","宋体"}
-input::-moz-focus-inner{border:0;padding:0}
-select,input{vertical-align:middle}
-select,input,textarea{font-size:12px;margin:0}
-input[type="text"],input[type="password"],textarea{outline-style:none;-webkit-appearance:none}
-textarea{resize:none}table{border-collapse:collapse}
-body{color:#333;padding:5px 0;font:12px/20px "SimSun","宋体","Arial Narrow",HELVETICA;background:#fff}
-.f-center{text-align: center;}
+* {
+    margin: 0;
+    padding: 0
+}
+
+fieldset,
+img {
+    border: 0
+}
+
+img {
+    display: block
+}
+
+address,
+caption,
+cite,
+code,
+dfn,
+th,
+var {
+    font-style: normal;
+    font-weight: normal
+}
+
+ul,
+ol {
+    list-style: none
+}
+
+input {
+    padding-top: 0;
+    padding-bottom: 0;
+    font-family: "SimSun", "宋体"
+}
+
+input::-moz-focus-inner {
+    border: 0;
+    padding: 0
+}
+
+select,
+input {
+    vertical-align: middle
+}
+
+select,
+input,
+textarea {
+    font-size: 12px;
+    margin: 0
+}
+
+input[type="text"],
+input[type="password"],
+textarea {
+    outline-style: none;
+    -webkit-appearance: none
+}
+
+textarea {
+    resize: none
+}
+
+table {
+    border-collapse: collapse
+}
+
+body {
+    color: #333;
+    font: 12px/20px "SimSun", "宋体", "Arial Narrow", HELVETICA;
+    background: #fff;
+}
+
+.f-center {
+    text-align: center;
+}
+
+header {
+    height: 40vh;
+    background: #05dee6;
+    position: relative;
+}
+
+main {
+    height: 60vh;
+    background: #fffccc;
+}
+
+h1:before {
+    content: "";
+    display: ;
+    color: red;
+    background: #fff;
+    border-radius: 100%;
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    left: -10px;
+    top: -10px;
+}
+
+h1 {
+    margin: 0 20px;
+    text-align: center;
+    color: rgba(62, 103, 179, 0.815);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
