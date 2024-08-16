@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="icon" href="logo.png">
+    <title>个人网站</title>
+    <style>
+        html,
+        body {
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #renderCanvas {
+            width: 100%;
+            height: 100%;
+            touch-action: none;
+        }
+    </style>
+    <script src="https://cdn.babylonjs.com/babylon.js"></script>
+    <script src="https://cdn.babylonjs.com/gui/babylon.gui.js"></script>
+    <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.js"></script>
+    <script src="https://cdn.babylonjs.com/materialsLibrary/babylonjs.materials.js"></script>
+    <script src="https://cdn.babylonjs.com/postProcessesLibrary/babylonjs.postProcess.js"></script>
+    <script src="https://cdn.babylonjs.com/proceduralTexturesLibrary/babylonjs.proceduralTextures.js"></script>
+    <script src="https://cdn.babylonjs.com/serializers/babylonjs.serializers.js"></script>
+    <script src="https://cdn.babylonjs.com/inspector/babylon.inspector.bundle.js"></script>
+</head>
+
+<body>
+
+    <canvas id="renderCanvas"></canvas>
+
+    <script>
+
+        var canvas = document.getElementById("renderCanvas");
+        var engine = new BABYLON.Engine(canvas, true);
+        var scene = createScene();
+        engine.runRenderLoop(function () {
+            scene.render();
+        });
+        window.addEventListener("resize", function () {
+            engine.resize();
+        });
+        document.onkeydown = function (e) {
+            if (e.key == "n") {
+                scene.debugLayer.show({ overlay: false, embedMode: false, enableClose: false, enablePopup: false });
+            }
+            if (e.key == "h") {
+                scene.debugLayer.hide();
+            }
+        }
+
+
+        function createScene() {
+            var scene = new BABYLON.Scene(engine);
+            // Fog
+            scene.fogMode = BABYLON.Scene.FOGMODE_LINEAR;
+            scene.fogColor = scene.clearColor;
+            scene.fogStart = 200.0;
+            scene.fogEnd = 2500.0;
+
+            var camera = new BABYLON.ArcRotateCamera("Camera", -1.7092, 1.5092, 7, BABYLON.Vector3.Zero(), scene);
+
+            camera.attachControl(canvas, true);
+            camera.upperBetaLimit = Math.PI / 2;
+            camera.lowerRadiusLimit = 4;
+            var environment = scene.createDefaultEnvironment({
+                skyboxSize: 5000
+            });
+            environment.setMainColor(new BABYLON.Color3(0.05, 0.05, 0.05));
+            // lights
+            var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(1, 0.5, 0), scene);
+            light.intensity = 0.8;
+
+            let directLight = new BABYLON.DirectionalLight("dir01", new BABYLON.Vector3(0, 1, 0), scene);
+
+            createMesh(scene);
+            createProcesses(scene, camera)
+            createCastorGUI(scene)
+            scene.getEngine().hideLoadingUI();
+            return scene;
+        }
+        function createProcesses(scene, camera) {
+
+
+            //默认渲染管线
+            var pipeline = new BABYLON.DefaultRenderingPipeline(
+                "defaultPipeline", // The name of the pipeline
+                true, // Do you want the pipeline to use HDR texture?
+                scene, // The scene instance
+                [camera] // The list of cameras to be attached to
+            );
+            pipeline.samples = 8;//MSAA 抗锯齿
+            pipeline.fxaaEnabled = true;//设置 FXAA 抗锯齿效果
+            //锐化
+            pipeline.sharpenEnabled = true;
+            pipeline.sharpen.edgeAmount = 1;
+            pipeline.imageProcessingEnabled = true;
+
+        }
+        function createCastorGUI(scene) {
+            var anchor = new BABYLON.TransformNode("3DUIAnchor");
+            anchor.position.x = 3.61
+            // Create the 3D UI manager
+            var manager = new BABYLON.GUI.GUI3DManager(scene);
+
+
+            var panel = new BABYLON.GUI.PlanePanel();
+
+            panel.margin = 0.2;
+            manager.addControl(panel);
+            panel.linkToTransformNode(anchor);
+            panel.position.z = -1.5;
+            var websiteModules = [
+                "首页",
+                "作品集",
+                "博客",
+                "关于我",
+                "联系我"
+                // ...其他模块  
+            ];
+            // Let's add some buttons!
+            var addButton = function (name) {
+                var button = new BABYLON.GUI.HolographicButton(name);
+                panel.addControl(button);
+                button.text = name;
+                button.imageUrl = "logo.png";
+                button.onPointerUpObservable.add(function () {
+
+                });
+            }
+
+            panel.blockLayout = true;
+            for (var index = 0; index < websiteModules.length; index++) {
+                addButton(websiteModules[index]);
+            }
+            panel.blockLayout = false;
+
+        }
+        function createMesh(scene) {
+            //高亮
+            let hl = new BABYLON.HighlightLayer("hl", scene);
+            const box = BABYLON.MeshBuilder.CreateBox("box", { size: 1 }, scene);
+            box.position.y = 0.5;
+            box.material = new BABYLON.StandardMaterial("box", scene);
+            box.material.diffuseColor = new BABYLON.Color3(0.1, 0.1, 1);
+            box.material.backFaceCulling = false;
+            box.material.alpha = 0.1;
+            //添加事件管理器
+            box.actionManager = new BABYLON.ActionManager(scene);
+            //鼠标移入
+            box.actionManager.registerAction(new BABYLON.ExecuteCodeAction(
+                BABYLON.ActionManager.OnPointerOverTrigger,
+                function () {
+                    hl.addMesh(box, new BABYLON.Color3(1, 1, 1));
+                }
+            ));
+            //鼠标移出
+            box.actionManager.registerAction(new BABYLON.ExecuteCodeAction(
+                BABYLON.ActionManager.OnPointerOutTrigger,
+                function () {
+                    hl.removeMesh(box);
+                }
+            ));
+        }
+    </script>
+</body>
+
+</html>
