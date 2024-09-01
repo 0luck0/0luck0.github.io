@@ -1,0 +1,1 @@
+import{m as t,n as e}from"./gui3DManager-DxXMSW_z.js";import"./index-c9x8XUQX.js";class a{constructor(){this.supportCascades=!1}loadCubeData(){throw".env not supported in Cube."}loadData(a,s,r){const o=new Uint8Array(a.buffer,a.byteOffset,a.byteLength),n=t(o);r(n.width,n.height,s.generateMipMaps,!1,(()=>{e(s,o)}))}}export{a as _TGATextureLoader};
