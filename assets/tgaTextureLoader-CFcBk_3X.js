@@ -1,0 +1,1 @@
+import{m as r,n}from"./_plugin-vue_export-helper-BDeLwvSG.js";import"./index-6pmZwgIe.js";class f{constructor(){this.supportCascades=!1}loadCubeData(){throw".env not supported in Cube."}loadData(e,t,a){const o=new Uint8Array(e.buffer,e.byteOffset,e.byteLength),s=r(o);a(s.width,s.height,t.generateMipMaps,!1,()=>{n(t,o)})}}export{f as _TGATextureLoader};
